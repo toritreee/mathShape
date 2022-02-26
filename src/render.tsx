@@ -40,7 +40,7 @@ export class Render extends React.Component<renderProps>{
     }
 
     //grid
-    private line = ()=>{
+    private grid = ()=>{
         //type test
         this.setCtx()
         const lattice = this.props.lattice
@@ -89,7 +89,7 @@ export class Render extends React.Component<renderProps>{
     }
 
     componentDidMount = ()=>{
-        this.line()
+        this.grid()
         this.renderPins()
     }
 

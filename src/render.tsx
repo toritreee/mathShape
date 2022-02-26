@@ -1,8 +1,16 @@
 import React from "react";
 
+export type pin = {x: number, y: number, name: string}
+
 interface renderProps{
     onClickPoint: (x: number, y: number)=>void
     lattice: number
+    pins: pin[]
+}
+
+function color(text: string){
+    const n = Array.from(text).map(ch => ch.charCodeAt(0)).reduce((a, b) => a+b)
+    return `hsl(${(n*n) % 360}, 80%, 64%)`
 }
 
 export class Render extends React.Component<renderProps>{
@@ -49,8 +57,40 @@ export class Render extends React.Component<renderProps>{
         }
     }
 
+    //x,y
+    private pin = (pin: pin)=>{
+        //type test
+        this.setCtx()
+        const lattice = this.props.lattice
+        if(typeof this.ctx == "undefined") return
+        //main code
+        this.ctx.strokeStyle = color(pin.name)
+        this.ctx.fillStyle = color(pin.name)
+        this.ctx.lineWidth = 1
+        this.ctx.beginPath()
+        this.ctx.arc(
+            pin.x*this.props.lattice,
+            pin.y*this.props.lattice,
+            lattice/5,
+            0,
+            2*Math.PI
+        )
+        this.ctx.fill()
+        this.ctx.font = `${lattice/2}px serif`
+        this.ctx.fillText(
+            pin.name,
+            pin.x*this.props.lattice+lattice/3,
+            pin.y*this.props.lattice+lattice/3)
+    }
+    private renderPins = ()=>{
+        for(let pin of this.props.pins){
+            this.pin(pin)
+        }
+    }
+
     componentDidMount = ()=>{
         this.line()
+        this.renderPins()
     }
 
     render(): React.ReactNode {

@@ -4,11 +4,14 @@ import {Render} from "./render"
 
 ReactDOM.render(
     <Render onClickPoint={(x,y)=>{console.log(x,y)}} lattice={50} pins={[
-        {x:2,y:2,name:"A"},
-        {x:4,y:5,name:"B"},
-        {x:5,y:2,name:"C"}
+        {x:3,y:2,name:"A"},
+        {x:2,y:4,name:"B"},
+        {x:4,y:4,name:"C"}
     ]} lines={[
-        {from:"A",to:"B",type:"segment"}
-    ]}/>,
+        {from:"B",to:"A",type:"segment"}
+    ]} angles={[
+        {from:"C",to:"A",point:"B"}
+    ]}
+    />,
     document.getElementById("root")
 )

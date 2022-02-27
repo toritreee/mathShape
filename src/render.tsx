@@ -1,12 +1,15 @@
 import React from "react";
+import * as vector from "./vector"
 
 export type pin = {x: number, y: number, name: string}
 export type line = {from: string, to: string, name?: string, type: "straight" | "segment" | "half"}
+export type angle = {from: string, point: string, to:string}
 interface renderProps{
     onClickPoint: (x: number, y: number)=>void
     lattice: number
     pins: pin[]
     lines: line[]
+    angles: angle[]
 }
 
 function color(text: string){
@@ -124,10 +127,41 @@ export class Render extends React.Component<renderProps>{
         }
     }
 
+    private angle = (angle: angle)=>{
+        //type test
+        this.setCtx()
+        const lattice = this.props.lattice
+        const get = (name: string)=> this.props.pins.find(v=>v.name == name)
+        const [from,to,point] = [get(angle.from),get(angle.to), get(angle.point)]
+        if(from == undefined || to == undefined || point == undefined || this.ctx == undefined || this.canvas.current == undefined)return
+        //main code
+        const a = vector.vector(from, point)
+        const b = vector.vector(to, point)
+        //painting
+        this.ctx.strokeStyle = "black"
+        this.ctx.lineWidth = 4
+        this.ctx.beginPath()
+        this.ctx.arc(
+            point.x*lattice,
+            point.y*lattice,
+            lattice/2,
+            -vector.angle(a,{x:1,y:0}),
+            -vector.angle(a,b),
+            true
+        )
+        this.ctx.stroke()
+    }
+    private angles = ()=>{
+        for(let angle of this.props.angles){
+            this.angle(angle)
+        }
+    }
+
     componentDidMount = ()=>{
         this.grid()
         this.lines()
         this.renderPins()
+        this.angles()
     }
 
     render(): React.ReactNode {

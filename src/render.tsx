@@ -53,6 +53,7 @@ export class Render extends React.Component<renderProps>{
         //main code
         this.ctx.strokeStyle = "gray"
         this.ctx.lineWidth = 1
+        this.ctx.clearRect(0,0,cv.width,cv.height)
         for(let i = 0; i!=Math.floor(cv.width / lattice);i++){
             this.ctx.strokeRect(i*lattice, 0, lattice, cv.width)
         }
@@ -157,11 +158,15 @@ export class Render extends React.Component<renderProps>{
         }
     }
 
-    componentDidMount = ()=>{
+    componentDidUpdate = ()=>{
         this.grid()
         this.lines()
         this.renderPins()
         this.angles()
+    }
+
+    componentDidMount = ()=>{
+        this.componentDidUpdate()
     }
 
     render(): React.ReactNode {

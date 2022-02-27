@@ -171,8 +171,8 @@ export class Render extends React.Component<renderProps>{
 
     render(): React.ReactNode {
         return <canvas
-            width={1000}
-            height={1000}
+            width={window.outerWidth}
+            height={window.outerHeight}
             ref={this.canvas}
             onClick={this.click}/>
     }

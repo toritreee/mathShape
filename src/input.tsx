@@ -52,7 +52,7 @@ export class Main extends React.Component<{
     }
 
     render(): React.ReactNode {
-        return <div>
+        return <div className="main">
             <render.Render
                 lattice={this.props.lattice}
                 pins={this.state.pins.pins}
